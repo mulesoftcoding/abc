@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="64c9bc21-8e04-4d9f-be07-088038d7fa8c" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="testFlow" doc:id="4301dabc-ca52-4157-bc26-b344036c774e" >
+		<http:listener doc:name="Listener" doc:id="fc8626c3-31de-4230-993e-da0a8d7af053" config-ref="HTTP_Listener_config" path="/test"/>
+		<logger level="INFO" doc:name="Logger" doc:id="47a168b8-0e4f-4dd7-bf67-63236af4802f" message="application started"/>
+		<async doc:name="Async" doc:id="925ca1a9-667c-47a7-b492-86b6f8c8e544" >
+			<flow-ref doc:name="Flow Reference" doc:id="cb28d3f6-0ed4-4c41-9860-380bdc5b6b30" name="testFlow1"/>
+		</async>
+		<set-payload value='#["parent flow"]' doc:name="Set Payload" doc:id="c61289a2-32af-41f1-9253-1e8478e630ad" />
+	</flow>
+	<flow name="testFlow1" doc:id="d61767d6-ada6-4611-a6cf-f378da5d7866" >
+		<logger level="INFO" doc:name="Logger" doc:id="bf71da93-ca0c-4341-b72b-6365827ba628" />
+		<set-payload value='#["child flow"]' doc:name="Set Payload" doc:id="542a4b91-840f-4687-89bb-fede6bf9c1a2" />
+	</flow>
+</mule>
